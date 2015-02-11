@@ -1,4 +1,4 @@
-package p2;
+package P2;
 
 enum TokenCode { 
 	ID, ASSIGN, SEMICOL, INT, 
@@ -7,7 +7,6 @@ enum TokenCode {
 }
 
 public class Token {
-	
 	public String lexeme;
 	public TokenCode tCode;
 	
