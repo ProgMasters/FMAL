@@ -7,6 +7,7 @@ public class Parser {
 	public Parser(Lexer lexer) {
 		this.lexer = lexer;
 	}
+	
 	//All other methods are private methods
 	
 	
