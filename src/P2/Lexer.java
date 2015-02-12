@@ -1,13 +1,8 @@
 package P2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
-import java.util.regex.*;
 
 import P2.Token.TokenCode;
 
@@ -67,6 +62,7 @@ public class Lexer {
 				
 				if(first.matches("[0-9]")) {
 					while(i < tokens.length() ) {
+						
 						if((tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || tokens.charAt(i + 1) == '(' ||
 								tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';' || tokens.charAt(i + 1) == ' ' ||
 								i == token.length() - 1)){
@@ -86,20 +82,36 @@ public class Lexer {
 
 				else if(first.matches("[A-Za-z]")) {
 					while(i < tokens.length()) {
-						if((tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || tokens.charAt(i + 1) == '(' ||
-								tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';' || tokens.charAt(i + 1) == ' ' ||
-								i == token.length() - 1)){
-							tokenList.add(new Token(TokenCode.ID, token));
-							break;
+						token += tokens.charAt(i);
+						
+						if(i == tokens.length() -1 || tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || 
+								tokens.charAt(i + 1) == '(' || tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';'  ||
+								tokens.charAt(i + 1) == ' '){
+							
+							if(token.matches("print")) {
+								tokenList.add(new Token(TokenCode.PRINT, token));
+								break;
+							}
+							
+							else if(token.matches("end")) {
+								tokenList.add(new Token(TokenCode.END, token));
+								break;
+							}
+							else {
+								tokenList.add(new Token(TokenCode.ID, token));
+								break;
+							}
 						}
 						
 						if(token.matches("[A-Za-z]+[0-9]")) {
 							tokenList.add(new Token(TokenCode.ERROR, ""));
 							break;
 						}
-
-						token += tokens.charAt(i);
+						
+						
+						
 						i++;
+						
 					}
 				}
 				else {
@@ -113,19 +125,9 @@ public class Lexer {
 	
 	public static void main(String[] args) {
 		Lexer lex = new Lexer();
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());	
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());	
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());	
-		System.out.println("token " + lex.nextToken());
-		System.out.println("token " + lex.nextToken());	
+		
+		while(!lex.tokenList.isEmpty()) {
+			System.out.println("token " + lex.nextToken());
+		}
 	}
 }
