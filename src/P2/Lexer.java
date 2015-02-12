@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-import P2.Token.TokenCode;
 
 public class Lexer {
 	public static Scanner in = new Scanner(System.in);
