@@ -63,10 +63,7 @@ public class Lexer {
 				
 				if(first.matches("[0-9]")) {	//if the token should be INT
 					while(i < tokens.length() ) {
-						
-						if((tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || tokens.charAt(i + 1) == '(' ||
-								tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';' || tokens.charAt(i + 1) == ' ' ||
-								i == token.length() - 1)){
+						if(checkNext(i, tokens)) { 
 							tokenList.add(new Token(TokenCode.INT, token));
 							break;
 						}
@@ -85,9 +82,7 @@ public class Lexer {
 					while(i < tokens.length()) {
 						token += tokens.charAt(i);
 						
-						if(i == tokens.length() -1 || tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || 
-								tokens.charAt(i + 1) == '(' || tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';'  ||
-								tokens.charAt(i + 1) == ' '){
+						if(checkNext(i, tokens)) {
 							
 							if(token.matches("print")) {
 								tokenList.add(new Token(TokenCode.PRINT, token));
@@ -109,8 +104,7 @@ public class Lexer {
 							break;
 						}
 						
-						i++;
-						
+						i++;	
 					}
 				}
 				else {	//Else the token i not recognized
@@ -122,11 +116,21 @@ public class Lexer {
 		}
 	}
 	
+	//Checks the next char in the tokens
+	private static boolean checkNext(int i, String tokens) {
+		if(i == tokens.length() - 1 || tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || 
+				tokens.charAt(i + 1) == '(' || tokens.charAt(i + 1) == ')' || tokens.charAt(i + 1) == '=' || tokens.charAt(i + 1) == ';'  ||
+				tokens.charAt(i + 1) == ' ')
+			return true;
+		else 
+			return false;
+	}
+	
 	public static void main(String[] args) {
 		Lexer lex = new Lexer();
 		
 		while(!lex.tokenList.isEmpty()) {
-			System.out.println("token " + lex.nextToken());
+			System.out.println(lex.nextToken());
 		}
 	}
 }
