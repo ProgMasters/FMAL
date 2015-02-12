@@ -17,7 +17,11 @@ public class Lexer {
 	//Returns the next token in the tokenList
 	public Token nextToken() {
 		return tokenList.poll();
-			
+	}
+	
+	// Returns, but does not remove, the next token in the tokenList
+	public Token peekToken() {
+		return tokenList.peek();
 	}
 	
 	private void getInput() {
@@ -63,6 +67,7 @@ public class Lexer {
 				
 				if(first.matches("[0-9]")) {	//if the token should be INT
 					while(i < tokens.length() ) {
+						token += tokens.charAt(i);
 						if(checkNext(i, tokens)) { 
 							tokenList.add(new Token(TokenCode.INT, token));
 							break;
@@ -128,9 +133,11 @@ public class Lexer {
 	
 	public static void main(String[] args) {
 		Lexer lex = new Lexer();
+		Token toke;
 		
 		while(!lex.tokenList.isEmpty()) {
-			System.out.println(lex.nextToken());
+			toke = lex.nextToken();
+			System.out.println(toke.tCode + " " + toke.lexeme);
 		}
 	}
 }

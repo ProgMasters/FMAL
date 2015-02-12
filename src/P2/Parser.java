@@ -15,19 +15,17 @@ public class Parser {
 	
 	private Lexer lexer = new Lexer();
 	private Token token;
-	private Stack<TokenCode> opStack;
 	
 	public Parser(Lexer lexer) {
 		this.lexer = lexer;
-		this.opStack = new Stack<TokenCode>();
 	}
-	
-	// All other methods are private methods
 	
 	public void parse() {
 		// TODO: Initiate the parse
 		Statements();
 	}
+
+	// All other methods are private methods
 	
 	private void Statements() {
 		token = lexer.nextToken();
@@ -35,31 +33,16 @@ public class Parser {
 			System.out.println("END");
 		} else {
 			Statement();
+			token = lexer.nextToken();
+
+			if(token.tCode != TokenCode.SEMICOL) {
+				error();
+			}
+			
 			Statements();
 		}
-		
-		// printOps();
-	}
-	
-	private void printOps() {
-		while(!opStack.empty()) {
-			TokenCode code = opStack.pop();
-			
-			if (code == TokenCode.PLUS) {
-				System.out.println("ADD");
-			} else if (code == TokenCode.MINUS) {
-				System.out.println("SUB");
-			} else if (code == TokenCode.MULT) {
-				System.out.println("MULT");
-			} else if (code == TokenCode.ASSIGN) {
-				System.out.println("ASSIGN");
-			}
-		}
-	}
 	
 	private void Statement() {
-		token = lexer.nextToken();
-		
 		if (token.tCode == TokenCode.ID) {
 			System.out.println("PUSH " + token.lexeme); // PUSH command for ID token
 			
@@ -67,6 +50,7 @@ public class Parser {
 			
 			if (token.tCode == TokenCode.ASSIGN) {
 				Expr();
+				System.out.println("ASSIGN");
 			} else {
 				error();
 			}
@@ -96,8 +80,6 @@ public class Parser {
 			} else if (token.tCode == TokenCode.MINUS) {
 				Expr();
 				System.out.println("SUB");
-			} else {
-				error();
 			}
 		}
 	}
@@ -108,8 +90,6 @@ public class Parser {
 		if ((token = lexer.nextToken()) != null) {
 			if (token.tCode == TokenCode.MULT) {
 				Term();
-			} else {
-				error();
 			}
 		}
 	}
