@@ -2,10 +2,8 @@ package P2;
 
 public class Compiler {
 	public static void main(String[] args) {
-		Lexer myLexer = new Lexer();
-		Parser myParser = new Parser(myLexer);
-		myParser.parse();
-		
-		
+		Lexer lexer = new Lexer();
+		Parser parser = new Parser(lexer);
+		parser.parse();
 	}
 }
