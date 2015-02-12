@@ -77,8 +77,6 @@ public class Lexer {
 							tokenList.add(new Token(TokenCode.ERROR, "ERROR"));
 							break;
 						}
-						
-						token += tokens.charAt(i);
 						i++;
 					}	
 				}
