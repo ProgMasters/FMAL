@@ -8,15 +8,16 @@ import P2.Token.TokenCode;
 
 public class Lexer {
 	public static Scanner in = new Scanner(System.in);
-	private static Queue<Token> tokenList = new LinkedList<Token>();
+	private static Queue<Token> tokenList = new LinkedList<Token>(); //Queue which stores all the tokens;
 	
+	//Constructor, simply gets the input
 	public Lexer() {
 		getInput();
 	}
 	
+	//Returns the next token in the tokenList
 	public Token nextToken() {
-		Token token = tokenList.poll();
-		return token;
+		return tokenList.poll();
 			
 	}
 	
@@ -25,11 +26,12 @@ public class Lexer {
 		while(in.hasNext()) {
 			input += in.next() + " ";
 		}
+		
 		lex(input);
 	}
 	
+	//Does all the calculation wich token is to use
 	private static void lex(String tokens) {
-		
 		for(int i = 0; i < tokens.length(); i++) {
 			
 			switch(tokens.charAt(i)) {
@@ -58,9 +60,9 @@ public class Lexer {
 				break;
 			default:
 				String token = "", first = "";
-				first += tokens.charAt(i);
+				first += tokens.charAt(i); //gets the first char of the token to decide which token it should be
 				
-				if(first.matches("[0-9]")) {
+				if(first.matches("[0-9]")) {	//if the token should be INT
 					while(i < tokens.length() ) {
 						
 						if((tokens.charAt(i + 1) == '+' || tokens.charAt(i + 1) == '-' || tokens.charAt(i + 1) == '*' || tokens.charAt(i + 1) == '(' ||
@@ -70,8 +72,8 @@ public class Lexer {
 							break;
 						}
 						
-						if(token.matches("[0-9]+[A-Za-z]")){
-							tokenList.add(new Token(TokenCode.ERROR, ""));
+						if(token.matches("[0-9]+[A-Za-z]")){	//if there is invalid token e.x. 1temp
+							tokenList.add(new Token(TokenCode.ERROR, "ERROR"));
 							break;
 						}
 						
@@ -80,7 +82,7 @@ public class Lexer {
 					}	
 				}
 
-				else if(first.matches("[A-Za-z]")) {
+				else if(first.matches("[A-Za-z]")) { 	//if the token should be ID or PRINT or END
 					while(i < tokens.length()) {
 						token += tokens.charAt(i);
 						
@@ -103,19 +105,17 @@ public class Lexer {
 							}
 						}
 						
-						if(token.matches("[A-Za-z]+[0-9]")) {
-							tokenList.add(new Token(TokenCode.ERROR, ""));
+						if(token.matches("[A-Za-z]+[0-9]")) {	//Invalid token
+							tokenList.add(new Token(TokenCode.ERROR, "ERROR"));
 							break;
 						}
-						
-						
 						
 						i++;
 						
 					}
 				}
-				else {
-					tokenList.add(new Token(TokenCode.ERROR, ""));
+				else {	//Else the token i not recognized
+					tokenList.add(new Token(TokenCode.ERROR, "ERROR"));
 					break;
 				}
 				
