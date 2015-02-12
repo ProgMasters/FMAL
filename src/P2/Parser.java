@@ -3,15 +3,7 @@ package P2;
 import java.util.Stack;
 
 
-public class Parser {
-	
-	/*
-	 * 	Statements -> Statement ; Statements | end
-	 *	Statement -> id = Expr | print id
- 	 * 	Expr- > Term | Term + Expr | Term – Expr
- 	 * 	Term -> Factor | Factor * Term
- 	 * 	Factor -> int | id | ( Expr )
-	 */
+public class Parser {	
 	
 	private Lexer lexer = new Lexer();
 	private Token token;
@@ -29,9 +21,7 @@ public class Parser {
 	
 	private void Statements() {
 		token = lexer.nextToken();
-		if (token.tCode == TokenCode.END) {
-			System.out.println("END");
-		} else {
+		if (token.tCode != TokenCode.END) {
 			Statement();
 			token = lexer.nextToken();
 
@@ -41,6 +31,7 @@ public class Parser {
 			
 			Statements();
 		}
+	}
 	
 	private void Statement() {
 		if (token.tCode == TokenCode.ID) {
@@ -73,11 +64,15 @@ public class Parser {
 	private void Expr() {
 		Term();
 		
-		if ((token = lexer.nextToken()) != null) {
-			if (token.tCode == TokenCode.PLUS) {
+		Token temp = lexer.peekToken();
+
+		if (temp != null) {
+			if (temp.tCode == TokenCode.PLUS) {
+				lexer.nextToken(); // remove plus token
 				Expr();
 				System.out.println("ADD");
-			} else if (token.tCode == TokenCode.MINUS) {
+			} else if (temp.tCode == TokenCode.MINUS) {
+				lexer.nextToken(); // remove minus token
 				Expr();
 				System.out.println("SUB");
 			}
@@ -87,9 +82,13 @@ public class Parser {
 	private void Term() {
 		Factor();
 		
-		if ((token = lexer.nextToken()) != null) {
-			if (token.tCode == TokenCode.MULT) {
+		Token temp = lexer.peekToken();
+
+		if (temp != null) {
+			if (temp.tCode == TokenCode.MULT) {
+				lexer.nextToken(); // remove mult token
 				Term();
+				System.out.println("MULT");
 			}
 		}
 	}
@@ -113,5 +112,6 @@ public class Parser {
 	
 	private void error() {
 		System.out.println("Syntax error!");
+		System.exit(0);
 	}
 }
