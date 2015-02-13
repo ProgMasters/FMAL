@@ -115,6 +115,9 @@ public class Interpreter {
 				} else {
 					System.out.println(Integer.parseInt(temp));
 				}
+			} else {
+				System.out.println("Error for operator: " + next);
+				System.exit(0);
 			}
 		}
  	}
