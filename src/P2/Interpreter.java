@@ -1,5 +1,6 @@
 package P2;
 
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
@@ -22,6 +23,7 @@ public class Interpreter {
 
 	public static void execute() {
 		String nextLine;
+
 		while (in.hasNext()) {
 			String next = in.next();
 
@@ -32,18 +34,35 @@ public class Interpreter {
 				temp = in.next();
 				stack.push(temp);
 			} else if (next.equals("ADD")) {
-				temp = stack.pop();
+				try {
+					temp = stack.pop();
+				}catch(EmptyStackException ex) {
+					ex("+");
+				}
 				
 				if (isID(temp)) {
-					a = map.get(temp);
+					try {
+						a = map.get(temp);
+					} catch (NullPointerException ex) {
+						ex("+");
+					}
 				} else {
 					a = Integer.parseInt(temp);
 				}
 				
-				temp = stack.pop();
+				try {
+					temp = stack.pop();	
+				} catch(EmptyStackException ex) {
+					ex("+");
+				}
+				
 				
 				if (isID(temp)) {
-					b = map.get(temp);
+					try {
+						b = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("+");
+					}
 				} else {
 					b = Integer.parseInt(temp);
 				}
@@ -53,18 +72,35 @@ public class Interpreter {
 				stack.push(sum.toString());
 				
 			} else if (next.equals("SUB")) {
-				temp = stack.pop();
-
+				
+				try {
+					temp = stack.pop();
+				}catch(EmptyStackException ex) {
+					ex("-");
+				}
+				
 				if (isID(temp)) {
-					a = map.get(temp);
+					try {
+						a = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("-");
+					}
 				} else {
 					a = Integer.parseInt(temp);
 				}
 
-				temp = stack.pop();
-
+				try {
+					temp = stack.pop();
+				} catch(EmptyStackException ex) {
+					ex("-");
+				}
+				
 				if (isID(temp)) {
-					b = map.get(temp);
+					try {
+						b = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("-");
+					}
 				} else {
 					b = Integer.parseInt(temp);
 				}
@@ -74,18 +110,34 @@ public class Interpreter {
 				stack.push(sum.toString());
 
 			} else if (next.equals("MULT")) {
-				temp = stack.pop();
-
+				try {
+					temp = stack.pop();
+				} catch(EmptyStackException ex) {
+					ex("*");
+				}
+				
 				if (isID(temp)) {
-					a = map.get(temp);
+					try {
+						a = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("*");
+					}
 				} else {
 					a = Integer.parseInt(temp);
 				}
-
-				temp = stack.pop();
-
+				
+				try {
+					temp = stack.pop();
+				} catch(EmptyStackException ex) {
+					ex("*");
+				}
+				
 				if (isID(temp)) {
-					b = map.get(temp);
+					try {
+						b = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("*");
+					}
 				} else {
 					b = Integer.parseInt(temp);
 				}
@@ -95,16 +147,30 @@ public class Interpreter {
 				stack.push(sum.toString());
 
 			} else if (next.equals("ASSIGN")) {
-				temp = stack.pop();
-
+				
+				try{
+					temp = stack.pop();
+				
+				} catch(EmptyStackException ex) {
+					ex("=");
+				}
+				
 				if (isID(temp)) {
-					a = map.get(temp);
+					try {
+						a = map.get(temp);
+					} catch(NullPointerException ex) {
+						ex("=");
+					}
 				} else {
 					a = Integer.parseInt(temp);
 				}
-
-				temp = stack.pop();
-
+				
+				try {
+					temp = stack.pop();
+				} catch(EmptyStackException ex) {
+					ex("=");
+				}
+				
 				map.put(temp, a);
 
 			} else if (next.equals("PRINT")) {
@@ -116,11 +182,16 @@ public class Interpreter {
 					System.out.println(Integer.parseInt(temp));
 				}
 			} else {
-				System.out.println("Error for operator: " + next);
-				System.exit(0);
+				ex(next);
 			}
 		}
+		
  	}
+	
+	private static void ex(String ex) {
+		System.out.println("Error for operator: " + ex);
+		System.exit(0);
+	}
 
  	private static boolean isID(String word) {
  		return word.matches("[A-Za-z]+");
